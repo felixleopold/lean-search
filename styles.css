@@ -1,0 +1,228 @@
+/* Lean Search */
+
+.lean-search-modal {
+  width: 760px;
+  max-width: 90vw;
+}
+
+.lean-search-input-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 2px 4px 6px;
+  border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.lean-search-input-field {
+  flex: 1;
+}
+
+.lean-search-input-field input.prompt-input {
+  width: 100%;
+}
+
+.lean-search-input__buttons button {
+  white-space: nowrap;
+}
+
+.lean-search-indexing {
+  text-align: center;
+  color: var(--text-accent);
+  font-size: var(--font-ui-smaller);
+  padding-bottom: 6px;
+  opacity: 0.85;
+}
+
+.lean-search-results {
+  max-height: 62vh;
+  overflow-y: auto;
+  /* Stack results as discrete cards with a consistent gutter between them. */
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 6px 2px 2px;
+}
+
+/* --- Result card ---------------------------------------------------------- */
+
+/* Each result is its own "pill": a bordered card so it's obvious where one
+   result ends and the next begins. */
+.lean-search-result {
+  display: block;
+  padding: 8px 12px;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-m);
+  background-color: var(--background-secondary);
+  cursor: pointer;
+  scroll-margin: 8px;
+  transition: background-color 80ms ease, border-color 80ms ease;
+}
+
+.lean-search-result:hover {
+  border-color: var(--background-modifier-border-hover);
+}
+
+.lean-search-result.is-selected {
+  background-color: var(--background-modifier-hover);
+  border-color: var(--interactive-accent);
+}
+
+/* icon gutter | text column | optional thumbnail */
+.lean-search-result__row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.lean-search-result__icon {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  margin-top: 1px;
+}
+
+.lean-search-result__icon svg {
+  width: var(--icon-s, 16px);
+  height: var(--icon-s, 16px);
+}
+
+/* Everything textual lives here, so title / path / excerpt all share one
+   left edge — no more ragged alignment. */
+.lean-search-result__main {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.lean-search-result__title-line {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+  line-height: 1.25;
+  overflow: hidden;
+}
+
+.lean-search-result__title {
+  flex: 0 0 auto;
+  max-width: 55%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--font-ui-medium);
+  font-weight: var(--font-bold);
+  color: var(--text-normal);
+}
+
+.lean-search-result__ext {
+  flex: 0 0 auto;
+  color: var(--text-faint);
+  font-size: var(--font-ui-smaller);
+  font-weight: normal;
+}
+
+.lean-search-result__recent {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  color: var(--text-accent);
+}
+
+.lean-search-result__recent svg {
+  width: 13px;
+  height: 13px;
+}
+
+.lean-search-result__counter {
+  flex: 0 0 auto;
+  margin-left: auto;
+  padding-left: 10px;
+  color: var(--text-faint);
+  font-size: var(--font-ui-smaller);
+  font-weight: normal;
+  white-space: nowrap;
+}
+
+.lean-search-result__sep {
+  flex: 0 0 auto;
+  color: var(--text-faint);
+  font-size: var(--font-ui-smaller);
+  font-weight: normal;
+  opacity: 0.5;
+}
+
+.lean-search-result__path {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--text-faint);
+  font-size: var(--font-ui-smaller);
+  font-weight: normal;
+}
+
+.lean-search-result__body {
+  color: var(--text-muted);
+  font-size: var(--font-ui-smaller);
+  margin-top: 1px;
+  line-height: 1.35;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.lean-search-result__debug {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 3px;
+  font-family: var(--font-monospace);
+  font-size: var(--font-ui-smaller);
+  color: var(--text-faint);
+}
+
+.lean-search-result__debug-final {
+  color: var(--text-accent);
+  font-weight: var(--font-semibold);
+}
+
+.lean-search-result__debug-terms {
+  color: var(--text-muted);
+}
+
+/* --- Thumbnail ------------------------------------------------------------ */
+
+.lean-search-result__thumb {
+  flex: 0 0 auto;
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: var(--radius-s);
+  background-color: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+}
+
+/* --- Empty / highlight ---------------------------------------------------- */
+
+.lean-search-empty {
+  text-align: center;
+  color: var(--text-muted);
+  padding: 18px;
+}
+
+/* When results exist this node is still rendered but empty — don't let its
+   padding add dead space at the bottom of the list. */
+.lean-search-empty:empty {
+  display: none;
+}
+
+.lean-search-highlight {
+  border-radius: var(--radius-s);
+}
+
+.lean-search-highlight--on {
+  background-color: var(--text-highlight-bg);
+  color: var(--text-normal);
+}

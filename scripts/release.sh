@@ -11,7 +11,7 @@ Examples:
   npm run release -- 1.3.2 --push --publish-notes
 
 What it does:
-  1. Updates package.json, package-lock.json, and manifest.json to <version>
+  1. Updates package.json, package-lock.json, manifest.json, and versions.json
   2. Runs lint and build
   3. Commits the release and creates a matching git tag
   4. Optionally pushes the commit/tag
@@ -92,10 +92,15 @@ echo "Updating manifest version to $version"
 node - "$version" <<'EOF'
 const fs = require("fs");
 const version = process.argv[2];
-const file = "manifest.json";
-const manifest = JSON.parse(fs.readFileSync(file, "utf8"));
+const manifestFile = "manifest.json";
+const manifest = JSON.parse(fs.readFileSync(manifestFile, "utf8"));
 manifest.version = version;
-fs.writeFileSync(file, JSON.stringify(manifest, null, 2) + "\n");
+fs.writeFileSync(manifestFile, JSON.stringify(manifest, null, 2) + "\n");
+
+const versionsFile = "versions.json";
+const versions = JSON.parse(fs.readFileSync(versionsFile, "utf8"));
+versions[version] = manifest.minAppVersion;
+fs.writeFileSync(versionsFile, JSON.stringify(versions, null, 2) + "\n");
 EOF
 
 echo "Running lint"
@@ -104,7 +109,7 @@ npm run lint
 echo "Running build"
 npm run build
 
-git add package.json package-lock.json manifest.json
+git add package.json package-lock.json manifest.json versions.json
 git add -f "$notes_file"
 git commit -m "Release $version"
 git tag -a "$version" -m "$version"

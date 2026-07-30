@@ -1,6 +1,6 @@
 <script lang="ts">
   import { createEventDispatcher, tick } from 'svelte'
-  import { Platform } from 'obsidian'
+  import { Platform, setIcon } from 'obsidian'
   import { toggleInputComposition } from '../globals'
   import { debounce, wait } from '../utils'
   import type LeanSearchPlugin from '../main'
@@ -17,6 +17,15 @@
   export function setInputValue(v: string): void {
     value = v
     dispatch('input', value)
+  }
+
+  function mountIcon(node: HTMLElement, icon: string): void {
+    setIcon(node, icon)
+  }
+
+  function clearInput(): void {
+    setInputValue('')
+    elInput.focus()
   }
 
   $: watchInitialValue(initialValue)
@@ -51,17 +60,33 @@
 
 <div class="lean-search-input-container">
   <div class="lean-search-input-field">
+    <span
+      class="lean-search-input__icon"
+      aria-hidden="true"
+      use:mountIcon={'search'}></span>
     <input
       bind:this={elInput}
       bind:value
       class="prompt-input"
       type="text"
+      aria-label={placeholder}
+      autocomplete="off"
       spellcheck="false"
       {placeholder}
       on:input={debouncedInput}
       on:compositionstart={() => toggleInputComposition(true)}
       on:compositionend={() => toggleInputComposition(false)}
       use:selectInput />
+    {#if value}
+      <button
+        class="clickable-icon lean-search-input__clear"
+        type="button"
+        aria-label="Clear search"
+        title="Clear search"
+        on:click={clearInput}>
+        <span aria-hidden="true" use:mountIcon={'x'}></span>
+      </button>
+    {/if}
   </div>
   <slot />
 </div>

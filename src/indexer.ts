@@ -5,8 +5,8 @@ import { getExtension, logVerbose } from './utils'
 
 type IdleDeadline = { timeRemaining: () => number; didTimeout: boolean }
 const scheduleIdle: (cb: (d: IdleDeadline) => void) => void =
-  typeof (window as any).requestIdleCallback === 'function'
-    ? cb => (window as any).requestIdleCallback(cb, { timeout: 1000 })
+  typeof window.requestIdleCallback === 'function'
+    ? cb => window.requestIdleCallback(cb, { timeout: 1000 })
     : cb =>
         window.setTimeout(
           () => cb({ timeRemaining: () => 8, didTimeout: false }),

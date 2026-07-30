@@ -2,7 +2,7 @@
 
 A fast, lean search for Obsidian that **always surfaces the note you want** — built around precise matching and heavy *frecency*, like [`zoxide`](https://github.com/ajeetdsouza/zoxide) for your vault.
 
-It started as a rethink of [Omnisearch](https://github.com/scambier/obsidian-omnisearch): same familiar modal, but with the parts that froze Obsidian, ballooned memory, and corrupted their cache removed — and with ranking that genuinely favors the notes you actually use.
+It started as a rethink of [Omnisearch](https://github.com/scambier/obsidian-omnisearch): a familiar search modal with a smaller memory footprint, incremental background indexing, and ranking that strongly favors the notes you actually use.
 
 ## Why it's different
 
@@ -80,4 +80,4 @@ commits, and tags a release.
 
 ## License
 
-MIT.
+[Apache 2.0](LICENSE) © Felix Leopold.

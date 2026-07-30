@@ -19,7 +19,7 @@
     "frecency",
     "zoxide"
   ],
-  "license": "MIT",
+  "license": "Apache-2.0",
   "devDependencies": {
     "@tsconfig/svelte": "^5.0.4",
     "@types/node": "^22.10.0",

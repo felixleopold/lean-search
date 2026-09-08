@@ -1,7 +1,7 @@
 {
   "id": "lean-search",
   "name": "Lean Search",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "minAppVersion": "1.7.2",
   "description": "Search your vault quickly with precise matching and frecency ranking that favors recently and frequently opened notes.",
   "author": "Felix Leopold",

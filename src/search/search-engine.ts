@@ -267,8 +267,10 @@ export class SearchEngine {
    */
   async getSuggestions(
     query: Query,
-    onPartial?: (notes: ResultNote[]) => void
+    onPartial?: (notes: ResultNote[]) => void,
+    signal?: AbortSignal
   ): Promise<ResultNote[]> {
+    if (signal?.aborted) return []
     const s = this.plugin.settings
     const isEmpty = query.isEmpty()
     let ranked: Ranked[]
@@ -320,6 +322,7 @@ export class SearchEngine {
       i < candidates.length;
       i += CONTENT_READ_CONCURRENCY
     ) {
+      if (signal?.aborted) return []
       const batch = await Promise.all(
         candidates.slice(i, i + CONTENT_READ_CONCURRENCY).map(async c => {
           const meta = this.plugin.documentStore.get(c.path)
@@ -332,6 +335,7 @@ export class SearchEngine {
         })
       )
 
+      if (signal?.aborted) return []
       for (const candidate of batch) {
         if (!candidate) continue
         const { c, meta, content } = candidate

@@ -9,3 +9,4 @@ install-plugin.sh
 test/.smoke.bundle.mjs
 test/.cache.bundle.mjs
 test/.perf.bundle.mjs
+test/.search.bundle.mjs

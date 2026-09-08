@@ -28,10 +28,6 @@ function cjkGrams(token: string): string[] {
   return out
 }
 
-function hasCJK(token: string): boolean {
-  return [...token].some(isCJK)
-}
-
 /**
  * Tokenizer for indexing. Produces extra tokens (compound splits, CJK grams)
  * so a note is findable several ways. More tokens here = more recall.
@@ -45,7 +41,7 @@ export function makeIndexTokenizer(splitCompound: boolean): Tokenizer {
       if (splitCompound) {
         out.push(...splitCamelCase(token), ...splitHyphens(token))
       }
-      if (hasCJK(token)) out.push(...cjkGrams(token))
+      if (isCJK(token)) out.push(...cjkGrams(token))
     }
     return out.filter(Boolean)
   }
@@ -61,7 +57,7 @@ export function makeSearchTokenizer(): Tokenizer {
     for (const token of text.split(SPACE_OR_PUNCTUATION)) {
       if (!token) continue
       out.push(token)
-      if (hasCJK(token)) out.push(...cjkGrams(token))
+      if (isCJK(token)) out.push(...cjkGrams(token))
     }
     return out.filter(Boolean)
   }

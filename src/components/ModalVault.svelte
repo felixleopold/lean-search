@@ -50,8 +50,14 @@
   const openNewPaneKey = $derived(plugin.settings.openInNewPane ? '↵' : `${ctrl} ↵`)
 
   let reqId = 0
+  let disposed = false
+  let searchController: AbortController | undefined
   let searchingTimer: number | undefined
   async function updateResults(): Promise<void> {
+    if (disposed) return
+    searchController?.abort()
+    const controller = new AbortController()
+    searchController = controller
     const id = ++reqId
     // Only flash "Searching…" if results take a noticeable moment to arrive.
     // The in-memory index resolves instantly (recents especially), so this
@@ -67,12 +73,13 @@
       searching = false
       resultNotes = partial
       selectedIndex = 0
-    })
+    }, controller.signal)
     if (id !== reqId) return // a newer query superseded this one
     window.clearTimeout(searchingTimer)
     searching = false
+    const selectedPath = selectedNote?.path
     resultNotes = notes
-    selectedIndex = 0
+    selectedIndex = Math.max(0, notes.findIndex(note => note.path === selectedPath))
     await scrollIntoView()
   }
   const updateDebounced = debounce(() => void updateResults(), 0)
@@ -81,6 +88,11 @@
     // Re-search whenever the query changes.
     void searchQuery
     updateDebounced()
+    return () => {
+      searchController?.abort()
+      reqId++
+      window.clearTimeout(searchingTimer)
+    }
   })
 
   $effect(() => {
@@ -120,7 +132,13 @@
     eventBus.on('vault', Action.NextSearchHistory, nextHistory)
     return indexingStep.subscribe(v => (step = v))
   })
-  onDestroy(() => eventBus.disable('vault'))
+  onDestroy(() => {
+    disposed = true
+    searchController?.abort()
+    reqId++
+    window.clearTimeout(searchingTimer)
+    eventBus.disable('vault')
+  })
 
   function saveQuery(): void {
     if (searchQuery) plugin.searchHistory.add(searchQuery)

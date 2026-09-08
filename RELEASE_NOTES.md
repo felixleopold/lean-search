@@ -1,19 +1,10 @@
-# Lean Search 1.0.0
+# Lean Search 1.0.1
 
-First release. A lean, fast vault search that always surfaces the note you want — precise matching plus heavy *frecency* (recently/frequently opened notes win), like `zoxide`.
+- Stop obsolete searches after the current read batch when the query changes or the search modal closes, reducing wasted reads and text processing during rapid typing.
+- Preserve keyboard selection when excerpts finish loading.
+- Speed up tokenization by checking for CJK characters without allocating a character array for every token.
+- Remove redundant regular-expression compilation during highlighting.
 
-## Highlights
+Search ranking, matching, excerpts, and image previews retain their existing behavior.
 
-- **Fast restarts.** A validated, versioned search index is restored across Obsidian restarts, then changed notes are refreshed lazily in the background. Invalid caches safely rebuild.
-- **Frecency ranking.** Notes you open often and recently jump to the top. Empty query lists your most-frecent notes.
-- **Reliable heading matches.** Explicit title/heading substring bonuses so heading hits surface instead of being buried under body text.
-- **Predictable matching.** AND-combined terms, prefix on, fuzzy off by default.
-- **Tiny footprint.** One inverted index in memory; excerpts read on demand.
-
-## Query syntax
-
-`foo bar` (all terms) · `"exact phrase"` · `#tag` · `-exclude`
-
-## Keyboard
-
-`↑↓` navigate · `Enter` open · `Ctrl/⌘ Enter` new pane · `Tab` search in file · `⌥ Enter` insert link · `⌥ ↑↓` history.
+Validation: core and cache tests, focused search cancellation and mixed-language tokenization tests, Svelte checks, production build, and the 5,000-note synthetic benchmark.

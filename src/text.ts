@@ -49,10 +49,7 @@ export class TextProcessor {
       this.plugin.settings.highlight ? ' lean-search-highlight--on' : ''
     }`
     const words = [...new Set(matches.map(m => m.match).filter(Boolean))]
-    const reg = this.stringsToRegex(words)
-    // Escape first, then inject spans (the regex is diacritic-normalized, but
-    // for highlighting we run it against the escaped original — close enough
-    // for the ASCII-ish word boundaries Obsidian search produces).
+    // Escape first, then highlight the matched original text.
     try {
       return escapeHTML(text).replace(
         new RegExp(
@@ -62,7 +59,6 @@ export class TextProcessor {
         `<span class="${cls}">$1</span>`
       )
     } catch {
-      void reg
       return escapeHTML(text)
     }
   }

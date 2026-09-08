@@ -1,6 +1,6 @@
 {
   "name": "lean-search",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A lean, fast Obsidian search that always surfaces the note you want, favoring recently-opened notes (frecency) like zoxide.",
   "main": "main.js",
   "scripts": {
@@ -8,7 +8,7 @@
     "build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
     "lint": "tsc -noEmit -skipLibCheck",
     "check": "svelte-check --tsconfig ./tsconfig.json",
-    "test": "esbuild test/smoke.mjs --bundle --platform=node --format=esm --outfile=test/.smoke.bundle.mjs && node test/.smoke.bundle.mjs && esbuild test/index-cache.mjs --bundle --platform=node --format=esm --alias:obsidian=./test/obsidian-shim.mjs --outfile=test/.cache.bundle.mjs && node test/.cache.bundle.mjs && rm -f test/.smoke.bundle.mjs test/.cache.bundle.mjs",
+    "test": "esbuild test/smoke.mjs --bundle --platform=node --format=esm --outfile=test/.smoke.bundle.mjs && node test/.smoke.bundle.mjs && esbuild test/index-cache.mjs --bundle --platform=node --format=esm --alias:obsidian=./test/obsidian-shim.mjs --outfile=test/.cache.bundle.mjs && node test/.cache.bundle.mjs && esbuild test/search.mjs --bundle --platform=node --format=esm --alias:obsidian=./test/obsidian-shim.mjs --outfile=test/.search.bundle.mjs && node test/.search.bundle.mjs && rm -f test/.search.bundle.mjs test/.smoke.bundle.mjs test/.cache.bundle.mjs",
     "bench": "esbuild test/perf.mjs --bundle --platform=node --format=esm --alias:obsidian=./test/obsidian-shim.mjs --outfile=test/.perf.bundle.mjs && node test/.perf.bundle.mjs && rm -f test/.perf.bundle.mjs",
     "vault-install": "bash scripts/install.sh",
     "release": "bash scripts/release.sh"
